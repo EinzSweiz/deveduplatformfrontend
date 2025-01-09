@@ -123,6 +123,16 @@ const Register = () => {
           <span className={`${isLoading ? 'opacity-50' : ''}`}>{isLoading ? 'Processing...' : 'Register'}</span>
         </button>
       </form>
+       {/* Add Reset Password Button */}
+       <div className="mt-4 text-center">
+        <button
+          type="button"
+          onClick={() => {router.push('/auth/login')}}
+          className="text-blue-500 hover:underline"
+        >
+          Login
+        </button>
+      </div>
     </AuthForm>
   );
 };

@@ -10,15 +10,10 @@ import SuccessMessage from '@/app/components/messages/SuccessMessage';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-
-  const handlePasswordReset = () => {
-    router.push('/auth/password-reset'); // Redirect to password reset page
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,30 +23,27 @@ const Login = () => {
 
     try {
       const response = await apiService.postWithoutToken(
-        '/api/user/accounts/login/',
-        { email, password }
+        '/api/user/accounts/password/reset/',
+        { email }
       );
       console.log('Response:', response);
 
       if (response.status === 200) {
-        setSuccess('Login successful! Redirecting to main page...');
-        const { access: accessToken, refresh: refreshToken, user } = response;
-        const userId = user.pk;
-        await handleLogin(userId, accessToken, refreshToken);
-        setTimeout(() => router.push('/'), 2000);
+        setSuccess('Redirecting for next steps...');
+        setTimeout(() => router.push('/password_change_message'), 2000);
       } else if (response.errors) {
         setError(Object.values(response.errors).join(' '));
       } else {
-        setError('Login failed. Email or password is incorrect.');
+        setError('Email is incorrect.');
       }
     } catch (err: any) {
       if (err.errors) {
         const errorMessages = Object.entries(err.errors || {})
           .map(([_, value]) => Array.isArray(value) ? value.join(' ') : value)
           .join(' ');
-        setError(errorMessages || 'Login failed. Email or password is incorrect.');
+        setError(errorMessages || 'Email is incorrect.');
       } else {
-        setError(err.message || 'Login failed. Email or password is incorrect.');
+        setError(err.message || 'Email is incorrect.');
       }
     } finally {
       setIsLoading(false);
@@ -59,7 +51,7 @@ const Login = () => {
   };
 
   return (
-    <AuthForm title="Login">
+    <AuthForm title="Password Reset">
       {/* Show errors or success messages */}
       {error && <ErrorMessage message={error} />}
       {success && <SuccessMessage message={success} />}
@@ -74,18 +66,6 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter email"
-            required
-          />
-        </div>
-        
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-700">Password</label>
-          <input
-            type="password"
-            className="w-full p-2 border rounded"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
             required
           />
         </div>
@@ -118,7 +98,7 @@ const Login = () => {
               ></path>
             </svg>
           )}
-          <span className={`${isLoading ? 'opacity-50' : ''}`}>{isLoading ? 'Processing...' : 'Login'}</span>
+          <span className={`${isLoading ? 'opacity-50' : ''}`}>{isLoading ? 'Processing...' : 'Reset'}</span>
         </button>
       </form>
 
@@ -126,20 +106,10 @@ const Login = () => {
       <div className="mt-4 text-center">
         <button
           type="button"
-          onClick={handlePasswordReset}
+          onClick={() => { router.push('/auth/login')}}
           className="text-blue-500 hover:underline"
         >
-          Forgot Password?
-        </button>
-      </div>
-      {/* Add Register Button */}
-      <div className="mt-4 text-center">
-        <button
-          type="button"
-          onClick={() => { router.push('/auth/register')}}
-          className="text-blue-500 hover:underline"
-        >
-          Register
+          Back to Login?
         </button>
       </div>
     </AuthForm>
