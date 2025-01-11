@@ -1,20 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useId } from 'react';
 import { useRouter } from 'next/navigation';
 import AuthForm from '../../components/auth/AuthForm';
 import apiService from '@/app/services/apiService';
-import { handleLogin } from '@/app/lib/actions';
 import ErrorMessage from '@/app/components/messages/ErrorMessage';
 import SuccessMessage from '@/app/components/messages/SuccessMessage';
-
+import { getUserId } from '@/app/lib/actions';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [userId, setUserId] = useState('');
   const router = useRouter();
 
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        // Fetch cookies using a client-side approach
+        const userId = await getUserId()
+        if (userId) {
+          setUserId(userId);
+        }
+      } catch (error) {
+        console.error('Error fetching user ID:', error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -24,7 +39,7 @@ const Login = () => {
     try {
       const response = await apiService.postWithoutToken(
         '/api/user/accounts/password/reset/',
-        { email }
+        { email }, false
       );
       console.log('Response:', response);
 
@@ -103,15 +118,22 @@ const Login = () => {
       </form>
 
       {/* Add Reset Password Button */}
-      <div className="mt-4 text-center">
-        <button
-          type="button"
-          onClick={() => { router.push('/auth/login')}}
-          className="text-blue-500 hover:underline"
-        >
-          Back to Login?
-        </button>
-      </div>
+
+     
+      {!userId ? (
+        <div className="mt-4 text-center">
+          <button
+            type="button"
+            onClick={() => {
+              router.push('/auth/login');
+            }}
+            className="text-blue-500 hover:underline"
+          >
+            Back to Login?
+          </button>
+        </div>
+      ) : null}
+     
     </AuthForm>
   );
 };

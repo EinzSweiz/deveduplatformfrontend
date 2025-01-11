@@ -32,23 +32,19 @@ const apiService = {
             throw error;
         }
     },
-    postWithoutToken: async function (
-        url: string,
-        data: any,
-        isFormData = false
-    ): Promise<any> {
+    postWithoutToken: async function (url: string, data: any, isFormData = false): Promise<any> {
         try {
             const headers: { [key: string]: string } = {
                 Accept: 'application/json',
             };
     
-            let body = data;
+            let body;
     
             if (isFormData) {
-                body = data;
+                body = data; // FormData
             } else {
                 headers['Content-Type'] = 'application/json';
-                body = JSON.stringify(data);
+                body = JSON.stringify(data); // JSON string
             }
     
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
@@ -60,7 +56,6 @@ const apiService = {
             const responseData = await response.json();
     
             if (!response.ok) {
-                // If the response is not OK, include the raw response in the error
                 throw {
                     status: response.status,
                     message: responseData.message || 'Request failed',
@@ -74,6 +69,53 @@ const apiService = {
             };
         } catch (error) {
             console.error('Error in postWithoutToken:', error);
+            throw error;
+        }
+    },
+    
+    put: async function (
+        url: string,
+        data: any,
+        isFormData = false
+    ): Promise<any> {
+        try {
+            let token = await getAccessToken()
+            if (!token) {
+                throw 'Not authorized!'
+            }
+            const headers: HeadersInit = {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            };
+    
+            const body = isFormData ? data : JSON.stringify(data);
+    
+            if (!isFormData) {
+                headers['Content-Type'] = 'application/json';
+            } 
+
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
+                method: 'PUT',
+                headers,
+                body,
+            });
+    
+            const responseData = await response.json();
+    
+            if (!response.ok) {
+                throw {
+                    status: response.status,
+                    message: responseData.message || 'Request failed',
+                    errors: responseData, // Include the entire response as `errors`
+                };
+            }
+    
+            return {
+                status: response.status,
+                ...responseData,
+            };
+        } catch (error) {
+            console.error('Error in put:', error);
             throw error;
         }
     },

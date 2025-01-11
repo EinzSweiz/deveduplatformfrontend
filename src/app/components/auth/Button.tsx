@@ -2,11 +2,11 @@ import React from "react";
 
 interface ButtonProps {
   label: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void; // Accept event argument
   type?: "button" | "submit" | "reset";
   isLoading?: boolean;
   disabled?: boolean;
-  color?: "blue" | "green" | "red" | "gray"; // Add color customization
+  color?: "blue" | "green" | "red" | "gray";
 }
 
 const Button: React.FC<ButtonProps> = ({

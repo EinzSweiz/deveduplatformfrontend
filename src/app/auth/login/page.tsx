@@ -7,6 +7,7 @@ import apiService from '@/app/services/apiService';
 import { handleLogin } from '@/app/lib/actions';
 import ErrorMessage from '@/app/components/messages/ErrorMessage';
 import SuccessMessage from '@/app/components/messages/SuccessMessage';
+import Button from '@/app/components/auth/Button';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -90,36 +91,14 @@ const Login = () => {
           />
         </div>
 
-        <button
+        <Button
+          label={isLoading ? 'Processing...' : 'Login'}
+          onClick={handleSubmit} // Pass the handler
           type="submit"
+          isLoading={isLoading}
           disabled={isLoading}
-          className={`relative w-full p-2 rounded font-semibold transition-all duration-200
-            ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'}`}
-        >
-          {isLoading && (
-            <svg
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 animate-spin h-5 w-5 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v8H4z"
-              ></path>
-            </svg>
-          )}
-          <span className={`${isLoading ? 'opacity-50' : ''}`}>{isLoading ? 'Processing...' : 'Login'}</span>
-        </button>
+          color="green"
+        />
       </form>
 
       {/* Add Reset Password Button */}

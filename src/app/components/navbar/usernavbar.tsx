@@ -51,10 +51,11 @@ const Navbar: React.FC<NavbarProps> = ({userId}) => {
       label: 'User',
       children: userId
         ? [
-            { key: '3', label: 'My Lessons', route: '/user/tom' },
-            { key: '4', label: 'My Messages', route: '/user/bill' },
-            { key: '5', label: 'My Exams', route: '/user/alex' },
-            { key: '6', label: 'Logout', onClick: handleLogout },
+            { key: '3', label: 'Profile', route: '/profile' },
+            { key: '4', label: 'My Lessons', route: '/user/tom' },
+            { key: '5', label: 'My Messages', route: '/user/bill' },
+            { key: '6', label: 'My Exams', route: '/user/alex' },
+            { key: '7', label: 'Logout', onClick: handleLogout },
           ]
         : [
             { key: '3', label: 'Login', route: '/auth/login' },
@@ -67,12 +68,12 @@ const Navbar: React.FC<NavbarProps> = ({userId}) => {
       icon: <TeamOutlined />,
       label: 'Team',
       children: [
-        { key: '7', label: 'Team 1', route: '/team/team1' },
-        { key: '8', label: 'Team 2', route: '/team/team2' },
+        { key: '8', label: 'Team 1', route: '/team/team1' },
+        { key: '9', label: 'Team 2', route: '/team/team2' },
       ],
     },
     {
-      key: '9',
+      key: '10',
       icon: <FileOutlined />,
       label: 'Files',
       route: '/files', // Define route for this item
