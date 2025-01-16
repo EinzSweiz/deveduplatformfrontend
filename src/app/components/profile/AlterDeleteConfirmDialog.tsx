@@ -16,6 +16,7 @@ type ConfirmDialogProps = {
   description: string; // Description of the dialog
   onConfirm: () => void; // Callback when user confirms
   onCancel: () => void; // Callback when user cancels
+  onOpenChange: () => void;
 };
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
@@ -24,9 +25,10 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   description,
   onConfirm,
   onCancel,
+  onOpenChange,
 }) => {
   return (
-    <AlertDialog open={isOpen} onOpenChange={onCancel}>
+    <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>

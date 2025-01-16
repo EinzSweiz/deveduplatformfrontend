@@ -65,38 +65,65 @@ const Register = () => {
 
   return (
     <AuthForm title="Register">
-      {error && <ErrorMessage message={error} />}
-      {success && <SuccessMessage message={success} />}
+      {/* Show errors or success messages */}
+      {error && <ErrorMessage message={error}/>}
+      {success && <SuccessMessage message={success}/>}
+
       <form onSubmit={handleSubmit}>
-      <InputField
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Name"
-        />
-        <InputField
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-        <InputField
-          type="password"
-          value={password1}
-          onChange={(e) => setPassword1(e.target.value)}
-          placeholder="Password"
-        />
-        <InputField
-          type="password"
-          value={password2}
-          onChange={(e) => setPassword2(e.target.value)}
-          placeholder="Confirm Password"
-        />
+        <div className="mb-4">
+          <label className="block mb-1 text-gray-300">Name</label>
+          <input
+            type="text"
+            className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white focus:border-blue-500"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your name"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 text-gray-300">Email</label>
+          <input
+            type="email"
+            className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white focus:border-blue-500"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 text-gray-300">Password</label>
+          <input
+            type="password"
+            className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white focus:border-blue-500"
+            value={password1}
+            onChange={(e) => setPassword1(e.target.value)}
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 text-gray-300">Confirm Password</label>
+          <input
+            type="password"
+            className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white focus:border-blue-500"
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
+            placeholder="Confirm your password"
+            required
+          />
+        </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={isLoading}
           className={`relative w-full p-2 rounded font-semibold transition-all duration-200
-            ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'}`}
+            ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-emerald-500 hover:bg-emerald-600'}`}
         >
           {isLoading && (
             <svg
@@ -120,20 +147,24 @@ const Register = () => {
               ></path>
             </svg>
           )}
-          <span className={`${isLoading ? 'opacity-50' : ''}`}>{isLoading ? 'Processing...' : 'Register'}</span>
+          <span className={`${isLoading ? 'opacity-50' : ''}`}>
+            {isLoading ? 'Processing...' : 'Register'}
+          </span>
         </button>
       </form>
-       {/* Add Reset Password Button */}
-       <div className="mt-4 text-center">
+
+      {/* Login Link */}
+      <div className="mt-4 text-center">
         <button
           type="button"
-          onClick={() => {router.push('/auth/login')}}
-          className="text-blue-500 hover:underline"
+          onClick={() => { router.push('/auth/login') }}
+          className="text-blue-400 hover:text-blue-500 hover:underline transition"
         >
-          Login
+          Already have an account? Login
         </button>
       </div>
     </AuthForm>
+
   );
 };
 

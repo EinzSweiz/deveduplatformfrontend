@@ -175,6 +175,7 @@ const UserProfile: React.FC = () => {
             description="This action is irreversible. Your account will be deactivated."
             onConfirm={handleDeleteAccount}
             onCancel={() => setIsDialogOpen(false)}
+            onOpenChange={() => setIsDialogOpen(false)}
           />
         </TabsContent>
       </Tabs>

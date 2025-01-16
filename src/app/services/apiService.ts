@@ -72,6 +72,51 @@ const apiService = {
             throw error;
         }
     },
+
+    postWithImage: async function (url: string, data: FormData): Promise<any> {
+        try {
+            // Retrieve the access token
+            const token = await getAccessToken();
+            if (!token) {
+                throw new Error('Not authorized');
+            }
+    
+            // Set up headers
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+    
+            // Send POST request
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
+                method: 'POST',
+                headers,
+                body: data,
+            });
+
+            // Parse the JSON response
+            const responseData = await response.json();
+    
+            // Check if the response is not OK
+            if (!response.ok) {
+                throw new Error(JSON.stringify({
+                    status: response.status,
+                    message: responseData.message || 'Request failed',
+                    errors: responseData, // Include the entire response for debugging
+                }));
+            }
+    
+            // Return the success response
+            return {
+                status: response.status,
+                ...responseData,
+            };
+        } catch (error: any) {
+            console.error('Error in postWithImage:', error);
+    
+            // Re-throw the error for further handling by the caller
+            throw error instanceof Error ? error : new Error(String(error));
+        }
+    },    
     
     put: async function (
         url: string,

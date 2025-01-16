@@ -17,7 +17,7 @@ interface NavbarProps {
   userId?: string | null
 }
 
-const Navbar: React.FC<NavbarProps> = ({userId}) => {
+const UserNavbar: React.FC<NavbarProps> = ({userId}) => {
   const [collapsed, setCollapsed] = useState(false);
   const router = useRouter();
  
@@ -35,7 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({userId}) => {
   const items = [
     {
       key: '1',
-      icon: <PieChartOutlined />,
+      icon: <PieChartOutlined/>,
       label: 'Dashboard',
       route: '/', // Define route for this item
     },
@@ -66,10 +66,10 @@ const Navbar: React.FC<NavbarProps> = ({userId}) => {
     {
       key: 'sub2',
       icon: <TeamOutlined />,
-      label: 'Team',
+      label: 'Courses',
       children: [
-        { key: '8', label: 'Team 1', route: '/team/team1' },
-        { key: '9', label: 'Team 2', route: '/team/team2' },
+        { key: '8', label: 'Create Course', route: '/course_create' },
+        { key: '9', label: 'My Courses', route: '/team/team2' },
       ],
     },
     {
@@ -101,49 +101,57 @@ const Navbar: React.FC<NavbarProps> = ({userId}) => {
   };
 
   return (
-    <Layout
-      style={{
-        minHeight: '100vh',
-        maxWidth: collapsed ? '5vh' : '22vh',
-        transition: 'all 0.1s ease-in-out',
-      }}
-    >
-      {/* Sidebar */}
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-        style={{
-          background: '#001529',
-          transition: 'width 2s ease-in-out', 
-        }}
-        width={250}
-        collapsedWidth={80}
-      >
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          items={items}
-          onClick={handleMenuClick} // Handle menu item clicks
-        />
-      </Sider>
+    <>
+      <section>
+        <div className='container'>
+          <div className="fixed top-0 left-0 z-50 h-[100px] flex transition">
+            <Layout
+              style={{
+                minHeight: '100vh',
+                maxWidth: collapsed ? '5vh' : '22vh',
+                transition: 'all 0.1s ease-in-out',
+              }}
+            >
+              {/* Sidebar */}
+              <Sider
+                collapsible
+                collapsed={collapsed}
+                onCollapse={(value) => setCollapsed(value)}
+                style={{
+                  background: '#001529',
+                  transition: 'width 2s ease-in-out', 
+                }}
+                width={250}
+                collapsedWidth={80}
+              >
+                <Menu
+                  theme="dark"
+                  mode="inline"
+                  defaultSelectedKeys={['1']}
+                  items={items}
+                  onClick={handleMenuClick} // Handle menu item clicks
+                />
+              </Sider>
 
-      <Content
-        style={{
-          backgroundColor: '#ffffff',
-          transition: 'margin-left 2s ease-in-out',
-        }}
-      >
-        <div
-          style={{
-            backgroundColor: '#ffffff',
-            height: '100%',
-          }}
-        />
-      </Content>
-    </Layout>
+              <Content
+                style={{
+                  backgroundColor: '#ffffff',
+                  transition: 'margin-left 2s ease-in-out',
+                }}
+              >
+                <div
+                  style={{
+                    backgroundColor: '#ffffff',
+                    height: '100%',
+                  }}
+                />
+              </Content>
+            </Layout>
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 
-export default Navbar;
+export default UserNavbar;

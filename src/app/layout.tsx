@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/navbar/usernavbar";
+import Navbar from "./sections/Navbar";
+import UserNavbar from "./components/navbar/usernavbar";
 import { getUserId } from "./lib/actions";
 
 const geistSans = Geist({
@@ -28,20 +29,11 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
-      >
-        <div className="flex min-h-screen">
-          {/* Navbar */}
-          <Navbar userId={userId}/>
-
-          {/* Main Content */}
-          <main
-            className="flex-grow bg-white transition-all duration-300"
-            style={{ padding: "16px" }}
-          >
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >   
+          <Navbar />
+          <UserNavbar userId={userId}/>
             {children}
-          </main>
-        </div>
       </body>
     </html>
   );
